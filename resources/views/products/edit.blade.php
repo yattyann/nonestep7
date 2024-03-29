@@ -8,7 +8,7 @@
 <body>
   <form>
     <label>ID</label>
-     
+
     <label>商品名</label> 
     <input type="text" placeholder="商品名を入力してください">
     <br>
@@ -40,7 +40,6 @@
     <br>
 
     <input type="submit" value="更新"> 
-    <input type="reset" value="戻る">
+    <a href="{{ route('products.show') }}"><button type='button'>戻る</button></a>
   </form>
-</body>
-</html>
+@endsection

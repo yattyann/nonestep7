@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Company;
 
 class ProductController extends Controller
 {
@@ -15,7 +16,8 @@ class ProductController extends Controller
     public function index()
     {
         $products=Product::all();
-        return view('products.index');
+        $companies=Company::all();
+        return view('products.index',compact('companies','products'));
     }
 
     /**
@@ -36,7 +38,25 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try{
+        $product = new Product();
+        $product->company_id = $request->get("company_id");
+        $product->product_name = $request->get("product_name");
+        $product->price = $request->get("price");
+        $product->stock = $request->get("stock");
+        $product->comment = $request->get("comment");
+
+        if($request->hasFile('img_path')) {
+            $path=$request->file('img_path')->store('public/productimages');
+            $product->img_path=basename($path);
+        }    
+
+        $product->save();
+
+            return redirect(route('products.index'));
+        }catch(e) {
+            return redirect(route('products.index'));
+    }
     }
 
     /**
@@ -47,6 +67,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
+        echo $id;
         return view('products.show');
     }
 
