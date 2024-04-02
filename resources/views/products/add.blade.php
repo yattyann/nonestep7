@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('title','商品新規登録画面')
+@section('page-title','商品画面')
 @section('content')
-<h2>商品新規登録画面</h2>
   <form action="{{ route('products.store') }}" method="post" enctype="multipart/form-data">
     @csrf
     <label>商品名</label> 

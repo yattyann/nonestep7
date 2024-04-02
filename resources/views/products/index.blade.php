@@ -17,7 +17,6 @@
 @endsection
 
 @section('content')
-<h2>商品一覧画面</h2>
 
   <div class="container">
   <table>  
@@ -43,7 +42,7 @@
         <td>{{$product->price}}</td>
         <td>{{$product->stock}}</td>
         <td>{{$product->company->company_name}}</td>
-        <td><a href="/product"><button>編集</button></a><a><button>削除</button></td>
+        <td><a href="{{ route('products.show',$product->id) }}"><button>詳細</button></a><a><button>削除</button></td>
       </tr>
 @endforeach
 
