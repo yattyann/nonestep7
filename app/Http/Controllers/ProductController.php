@@ -15,7 +15,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //イフ文書くところ！！！
+        //イフ文書くところ！！！検索機能
         $products=Product::all();
         $companies=Company::all();
         return view('products.index',compact('companies','products'));
