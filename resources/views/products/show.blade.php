@@ -25,12 +25,7 @@
       </tr>
   </table>
 
-<div>  
-    <th><a href="{{ route('products.edit', $product->id) }}"><button>編集</button></a></th>
-</div>
-
-<div>  
-    <th><a href="{{ route('products.index') }}"><button>戻る</button></a></th>
-</div>
+  <input type="submit" value="編集"> 
+    <a href="{{ route('products.edit',$product->id) }}"><button type='button'>戻る</button></a>
 
 @endsection

@@ -4,7 +4,6 @@
 @section('sort')
 <div class="sort-area">
   <form method="get" action="{{route('products.index')}}">
-    @csrf
     <input type="text" name="keyword">
     <select>
       @foreach($companies as $company)
@@ -34,7 +33,7 @@
       <tr>
         <td>{{$product->id}}</td>
         @if($product->img_path)
-        <td><img src="{{ asset('storage/productImages/' . $product->img_path) }}" style="width: 100px: height: 100px object-fit: cover;"></td>
+        <td><img src="{{ asset('storage/productImages/' . $product->img_path) }}" style="width: 100px; height: 100px object-fit: cover;"></td>
         @else
         <td>商品画像</td>
         @endif

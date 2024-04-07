@@ -2,10 +2,14 @@
 @section('title','商品情報編集画面')
 @section('page-title','商品情報編集画面')
 @section('content')
-  <form>
+  <form action="{{ route('products.update',$product->id) }}" method="post" enctype="multipart/form-data">
   @csrf
-    <label>ID</label>
+  @method('put')
+  <label>ID</label>
+  
 
+
+  
     <label>商品名</label> 
     <input type="text" placeholder="商品名を入力してください" value="{{ $product->product_name }}">
     <br>

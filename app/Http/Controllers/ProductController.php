@@ -15,6 +15,7 @@ class ProductController extends Controller
      */
     public function index()
     {
+        //イフ文書くところ！！！
         $products=Product::all();
         $companies=Company::all();
         return view('products.index',compact('companies','products'));
@@ -92,7 +93,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //データを更新コードを記入
     }
 
     /**
@@ -103,6 +104,6 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //データを削除するコードを記入
     }
 }

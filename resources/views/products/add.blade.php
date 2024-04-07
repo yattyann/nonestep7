@@ -1,10 +1,10 @@
 @extends('layouts.main')
 @section('title','商品新規登録画面')
-@section('page-title','商品画面')
+@section('page-title','商品新規登録')
 @section('content')
   <form action="{{ route('products.store') }}" method="post" enctype="multipart/form-data">
     @csrf
-    <label>商品名</label> 
+    <label>商品名<span>*</span></label> 
     <input type="text" placeholder="商品名を入力してください" name="product_name">
     <br>
 
