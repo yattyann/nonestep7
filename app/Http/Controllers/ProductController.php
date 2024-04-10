@@ -13,10 +13,20 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+
+
+    public function index(Request $request)
     {
-        //イフ文書くところ！！！検索機能
-        $products=Product::all();
+        
+        $keyword = $request->input('keyword'); // リクエストから検索キーワードを取得
+        
+        // 検索キーワードがある場合は、商品名にキーワードを含む商品を検索する
+        if (!empty($keyword)) {
+            $products = Product::where('product_name', 'like', '%' . $keyword . '%')->get();
+        } else {
+            $products = Product::all();
+        }
+        
         $companies=Company::all();
         return view('products.index',compact('companies','products'));
     }
@@ -93,7 +103,28 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //データを更新コードを記入
+        // バリデーションを実行
+    $request->validate([
+        'product_name' => 'required|string|max:255',
+        'price' => 'required|numeric|min:0',
+        'stock' => 'required|integer|min:0',
+        // 他のフィールドのバリデーションルールを追加
+    ]);
+
+    // 更新対象の商品を取得
+    $product = Product::findOrFail($id);
+
+    // フォームから受け取ったデータで商品情報を更新
+        $product->product_name = $request->input('product_name');
+        $product->price = $request->input('price');
+        $product->stock = $request->input('stock');
+    // 他の更新するフィールドがあれば同様に追加
+
+    // 商品情報を保存
+        $product->save();
+
+    // リダイレクトまたはレスポンスを返す
+        return redirect()->route('products.index')->with('success', '商品情報を更新しました。');
     }
 
     /**
@@ -104,6 +135,13 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //データを削除するコードを記入
-    }
+    // 指定されたIDに対応する商品を取得
+        $product = Product::findOrFail($id);
+
+    // 商品を削除
+        $product->delete();
+
+    // リダイレクトまたはレスポンスを返す
+        return redirect()->route('products.index')->with('success', '商品を削除しました。');
+    }    
 }
