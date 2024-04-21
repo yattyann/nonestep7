@@ -14,15 +14,13 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-
     public function index(Request $request)
     {
-        
         $keyword = $request->input('keyword'); // リクエストから検索キーワードを取得
         
         // 検索キーワードがある場合は、商品名にキーワードを含む商品を検索する
         if (!empty($keyword)) {
-            $products = Product::where('product_name', 'like', '%' . $keyword . '%')->get();
+            $products = Product::where('product_name', 'like', '%' . $keyword . '%')->where('company_id',$request->get('company_id'))->get();
         } else {
             $products = Product::all();
         }
@@ -50,6 +48,28 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        $validatedData = $request->validate([
+            'product_name' => 'required|string|max:255',
+            'company_id' => 'required|integer',
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+            'comment' => 'nullable|string|max:1000',
+            'img_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+    
+        // バリデーションを通過したら、新しい商品を作成して保存するロジックを追加
+    
+        {
+            $validatedData = $request->validate([
+                // バリデーションルール
+            ]);
+        
+            // バリデーションを通過したら、新しい商品を作成して保存するロジックを追加
+        
+            // バリデーションに失敗した場合は、フォームにリダイレクトしてエラーメッセージを表示
+            return redirect()->back()->withErrors($validatedData)->withInput();
+        }
+
         try{
         $product = new Product();
         $product->company_id = $request->get("company_id");
@@ -65,9 +85,10 @@ class ProductController extends Controller
 
         $product->save();
 
-            return redirect(route('products.index'));
-        }catch(e) {
-            return redirect(route('products.index'));
+        return redirect(route('products.index'))->with('success', '商品を追加しました。');
+    } catch (\Exception $e) {
+        // エラーが発生した場合の処理
+        return redirect(route('products.index'))->with('error', '商品の追加中にエラーが発生しました。');
     }
     }
 
@@ -118,6 +139,12 @@ class ProductController extends Controller
         $product->product_name = $request->input('product_name');
         $product->price = $request->input('price');
         $product->stock = $request->input('stock');
+        $product->company_id = $request->input('company_id');
+        $product->comment = $request->input('comment');
+        if($request->hasFile('img_path')) {
+            $path=$request->file('img_path')->store('public/productimages');
+            $product->img_path=basename($path);
+        }
     // 他の更新するフィールドがあれば同様に追加
 
     // 商品情報を保存
@@ -136,12 +163,12 @@ class ProductController extends Controller
     public function destroy($id)
     {
     // 指定されたIDに対応する商品を取得
-        $product = Product::findOrFail($id);
+    $product = Product::findOrFail($id);
 
     // 商品を削除
-        $product->delete();
+    $product->delete();
 
     // リダイレクトまたはレスポンスを返す
-        return redirect()->route('products.index')->with('success', '商品を削除しました。');
-    }    
+    return redirect()->route('products.index')->with('success', '商品を削除しました。');
+    }
 }

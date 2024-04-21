@@ -1,11 +1,11 @@
-@extends('layouts.main')
+@extends('layouts.app')
 @section('title','商品一覧画面')
 @section('page-title','商品一覧画面')
 @section('sort')
 <div class="sort-area">
   <form method="get" action="{{route('products.index')}}">
-    <input type="text" name="keyword">
-    <select>
+    <input type="text" placeholder="キーワードを入力してください" name="keyword">
+    <select name="company_id">
       @foreach($companies as $company)
       <option value="{{$company->id}}">{{$company->company_name}}</option>
       @endforeach
@@ -41,7 +41,14 @@
         <td>{{$product->price}}</td>
         <td>{{$product->stock}}</td>
         <td>{{$product->company->company_name}}</td>
-        <td><a href="{{ route('products.show',$product->id) }}"><button>詳細</button></a><a><button>削除</button></td>
+        <td><a href="{{ route('products.show',$product->id) }}"><button>詳細</button></a>
+        <td>
+        <form action="{{ route('products.destroy', $product->id) }}" method="POST" onsubmit="return confirm('本当に削除してもよろしいですか？');">
+        @csrf
+        @method('DELETE')
+        <button type="submit">削除</button>
+        </form>
+        </td>
       </tr>
 @endforeach
 

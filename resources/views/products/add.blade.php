@@ -4,6 +4,17 @@
 @section('content')
   <form action="{{ route('products.store') }}" method="post" enctype="multipart/form-data">
     @csrf
+
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
     <label>商品名<span>*</span></label> 
     <input type="text" placeholder="商品名を入力してください" name="product_name">
     <br>
