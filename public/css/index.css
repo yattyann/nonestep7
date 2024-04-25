@@ -1,0 +1,60 @@
+/* 検索エリア */
+.sort-area {
+  margin-bottom: 20px;
+}
+
+.sort-area input[type="text"],
+.sort-area select {
+  margin-right: 10px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.sort-area button {
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.sort-area button:hover {
+  background-color: #0056b3;
+}
+
+/* 商品一覧テーブル */
+.container {
+  margin-top: 20px;
+}
+
+.container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.container th,
+.container td {
+  padding: 10px;
+  text-align: center;
+}
+
+.container th {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.container tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.container tr:hover {
+  background-color: #ddd;
+}
+
+.container td img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}

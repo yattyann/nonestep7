@@ -1,6 +1,11 @@
 @extends('layouts.app')
 @section('title','商品一覧画面')
 @section('page-title','商品一覧画面')
+
+@section('head')
+<link rel="stylesheet" type="text/css" href="{{ asset('css/index.css') }}">
+@endsection
+
 @section('sort')
 <div class="sort-area">
   <form method="get" action="{{route('products.index')}}">
@@ -16,8 +21,7 @@
 @endsection
 
 @section('content')
-
-  <div class="container">
+<div class="container">
   <table>  
       <tr>
         <th>ID</th>
@@ -26,14 +30,14 @@
         <th>価格</th>
         <th>在庫数</th>
         <th>メーカー名</th>
-        <th><a href="{{ route('products.create') }}"><button>新規登録</button></th>
+        <th><a href="{{ route('products.create') }}"><button>新規登録</button></a></th>
       </tr>
 
 @foreach($products as $product)
       <tr>
         <td>{{$product->id}}</td>
         @if($product->img_path)
-        <td><img src="{{ asset('storage/productImages/' . $product->img_path) }}" style="width: 100px; height: 100px object-fit: cover;"></td>
+        <td><img src="{{ asset('storage/productImages/' . $product->img_path) }}" style="width: 100px; height: 100px; object-fit: cover;"></td>
         @else
         <td>商品画像</td>
         @endif
@@ -41,7 +45,7 @@
         <td>{{$product->price}}</td>
         <td>{{$product->stock}}</td>
         <td>{{$product->company->company_name}}</td>
-        <td><a href="{{ route('products.show',$product->id) }}"><button>詳細</button></a>
+        <td><a href="{{ route('products.show',$product->id) }}"><button>詳細</button></a></td>
         <td>
         <form action="{{ route('products.destroy', $product->id) }}" method="POST" onsubmit="return confirm('本当に削除してもよろしいですか？');">
         @csrf

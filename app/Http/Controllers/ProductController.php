@@ -14,21 +14,23 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+    
     public function index(Request $request)
     {
-        $keyword = $request->input('keyword'); // リクエストから検索キーワードを取得
-        
+        $keyword = $request->input('keyword');
+          
         // 検索キーワードがある場合は、商品名にキーワードを含む商品を検索する
         if (!empty($keyword)) {
-            $products = Product::where('product_name', 'like', '%' . $keyword . '%')->where('company_id',$request->get('company_id'))->get();
+            $products = Product::where('product_name', 'like', '%' . $keyword . '%')->where('company_id', $request->get('company_id'))->get();
         } else {
             $products = Product::all();
         }
-        
-        $companies=Company::all();
-        return view('products.index',compact('companies','products'));
+         
+        $companies = Company::all(); // ここで会社情報を取得する
+         
+        return view('products.index', compact('companies', 'products'));
     }
-
+     
     /**
      * Show the form for creating a new resource.
      *
@@ -46,31 +48,20 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'product_name' => 'required|string|max:255',
-            'company_id' => 'required|integer',
-            'price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
-            'comment' => 'nullable|string|max:1000',
-            'img_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-    
-        // バリデーションを通過したら、新しい商品を作成して保存するロジックを追加
-    
-        {
-            $validatedData = $request->validate([
-                // バリデーションルール
-            ]);
-        
-            // バリデーションを通過したら、新しい商品を作成して保存するロジックを追加
-        
-            // バリデーションに失敗した場合は、フォームにリダイレクトしてエラーメッセージを表示
-            return redirect()->back()->withErrors($validatedData)->withInput();
-        }
 
-        try{
+    public function store(Request $request)
+{
+    // バリデーションを実行
+    $validatedData = $request->validate([
+        'product_name' => 'required|string|max:255',
+        'company_id' => 'required|integer',
+        'price' => 'required|numeric|min:0',
+        'stock' => 'required|integer|min:0',
+        'comment' => 'nullable|string|max:1000',
+        'img_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
+
+    try {
         $product = new Product();
         $product->company_id = $request->get("company_id");
         $product->product_name = $request->get("product_name");
@@ -78,10 +69,10 @@ class ProductController extends Controller
         $product->stock = $request->get("stock");
         $product->comment = $request->get("comment");
 
-        if($request->hasFile('img_path')) {
-            $path=$request->file('img_path')->store('public/productimages');
-            $product->img_path=basename($path);
-        }    
+        if ($request->hasFile('img_path')) {
+            $path = $request->file('img_path')->store('public/productimages');
+            $product->img_path = basename($path);
+        }
 
         $product->save();
 
@@ -90,7 +81,7 @@ class ProductController extends Controller
         // エラーが発生した場合の処理
         return redirect(route('products.index'))->with('error', '商品の追加中にエラーが発生しました。');
     }
-    }
+}
 
     /**
      * Display the specified resource.

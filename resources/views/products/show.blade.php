@@ -9,7 +9,7 @@
         <th>ID</th><td>{{$product->id}}</td>
       </tr>
       <tr>
-        <th>商品画像</th><td>商品画像</td>
+        <th>商品画像</th><td><img src="{{ asset('storage/productImages/' . $product->img_path) }}" style="width: 100px; height: 100px; object-fit: cover;"></td> <!-- 商品画像を表示 -->
       </tr>
       <tr>
         <th>商品名</th><td>{{$product->product_name}}</td>
@@ -28,4 +28,5 @@
     <a href="{{ route('products.edit',$product->id) }}"><button type='button'>編集</button></a>
     <a href="{{ route('products.index',$product->id) }}"><button type='button'>戻る</button></a>
 
+</div>
 @endsection
