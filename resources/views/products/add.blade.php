@@ -1,6 +1,11 @@
 @extends('layouts.main')
 @section('title', '商品新規登録画面')
 @section('page-title', '商品新規登録')
+
+@section('head')
+<link rel="stylesheet" type="text/css" href="{{ asset('css/index.css') }}">
+@endsection
+
 @section('content')
     <form action="{{ route('products.store') }}" method="post" enctype="multipart/form-data">
         @csrf

@@ -6,13 +6,14 @@
 .sort-area input[type="text"],
 .sort-area select {
   margin-right: 10px;
-  padding: 5px;
+  padding: 8px; /* パディングを増やして大きくする */
   border-radius: 5px;
   border: 1px solid #ccc;
+  width: 300px; /* 幅を長めに設定 */
 }
 
 .sort-area button {
-  padding: 5px 10px;
+  padding: 8px 15px; /* パディングを増やして大きくする */
   border-radius: 5px;
   background-color: #007bff;
   color: #fff;
@@ -58,3 +59,4 @@
   height: 100px;
   object-fit: cover;
 }
+

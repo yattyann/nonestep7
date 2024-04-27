@@ -28,7 +28,7 @@ class ProductController extends Controller
          
         $companies = Company::all(); // ここで会社情報を取得する
          
-        return view('products.index', compact('companies', 'products'));
+        return view('products.index', compact('companies','products'));
     }
      
     /**
@@ -39,7 +39,7 @@ class ProductController extends Controller
     public function create()
     {
         $companies=Company::all();
-        return view('products.add');
+        return view('products.add', compact('companies'));
     }
 
     /**

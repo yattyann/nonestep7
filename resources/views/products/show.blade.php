@@ -1,6 +1,11 @@
 @extends('layouts.main')
 @section('title','商品情報詳細画面')
 @section('page-title','商品情報詳細画面')
+
+@section('head')
+<link rel="stylesheet" type="text/css" href="{{ asset('css/index.css') }}">
+@endsection
+
 @section('content')
 
 <div class="container">

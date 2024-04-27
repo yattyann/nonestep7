@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.main')
 @section('title','商品一覧画面')
 @section('page-title','商品一覧画面')
 
