@@ -7,6 +7,7 @@
 @endsection
 
 @section('content')
+<div class="container">
     <form action="{{ route('products.store') }}" method="post" enctype="multipart/form-data">
         @csrf
         @if ($errors->any())
@@ -50,4 +51,5 @@
         <input type="submit" value="新規登録">
         <a href="{{ route('products.index') }}"><button type='button'>戻る</button></a>
     </form>
+    </div>
 @endsection

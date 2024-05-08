@@ -60,3 +60,7 @@
   object-fit: cover;
 }
 
+.alert {
+  background-color: #007bff;
+  color: #fff;
+}

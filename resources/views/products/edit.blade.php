@@ -7,12 +7,12 @@
 @endsection
 
 @section('content')
+<div class="container">
     <form action="{{ route('products.update', $product->id) }}" method="post" enctype="multipart/form-data">
         @csrf
         @method('put')
-
         @if ($errors->any())
-            <div class="alert alert-danger">
+            <div class="alert">
                 <ul>
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -58,6 +58,7 @@
         <br><br>
 
         <input type="submit" value="更新">
-        <a href="{{ route('products.show', $product->id) }}"><button type='button'>戻る</button></a>
-    </form>
+        <a href="{{ route('products.show', $product->id) }}"><button type='button'>戻る</button></a>  
+      </form>
+      </div>  
 @endsection
