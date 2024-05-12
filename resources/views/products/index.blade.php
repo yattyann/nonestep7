@@ -22,6 +22,7 @@
 
 @section('content')
 <div class="container">
+<div style="border: 2px solid black; padding: 5px;">
   <table>  
       <tr>
         <th>ID</th>

@@ -9,7 +9,7 @@
   padding: 8px; /* パディングを増やして大きくする */
   border-radius: 5px;
   border: 1px solid #ccc;
-  width: 300px; /* 幅を長めに設定 */
+  width: 40%; /* 幅を長めに設定 */
 }
 
 .sort-area button {
@@ -37,7 +37,7 @@
 
 .container th,
 .container td {
-  padding: 10px;
+  padding: 20px;
   text-align: center;
 }
 
@@ -61,6 +61,16 @@
 }
 
 .alert {
-  background-color: #007bff;
+  background-color: #ff0000;
   color: #fff;
+}
+
+.item {
+  margin-right: 20px; /* 要素間の余白を設定 */
+  min-width: 200px; /* 要素の最小幅を設定 */
+  text-align: right; /* テキストを右寄せにする */
+}
+
+.input-field {
+  width: 300px; 
 }
