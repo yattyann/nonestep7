@@ -58,8 +58,19 @@ class ProductController extends Controller
         'stock' => 'required|integer|min:0',
         'comment' => 'nullable|string|max:1000',
         'img_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-    ]);
 
+    ], [
+        // バリデーションエラーメッセージを日本語にする
+        'required' => ':attributeは必須項目です。',
+        'string' => ':attributeは文字列を入力してください。',
+        'max' => ':attributeは:max文字以内で入力してください。',
+        'integer' => ':attributeは整数を入力してください。',
+        'numeric' => ':attributeは数値を入力してください。',
+        'min' => ':attributeは:min以上で入力してください。',
+        'image' => '画像ファイルを選択してください。',
+        'mimes' => '画像ファイルの形式は:valuesのみ有効です。',
+    ]);    
+   
     try {
         $product = new Product();
         $product->company_id = $request->get("company_id");
