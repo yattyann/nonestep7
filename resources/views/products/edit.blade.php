@@ -67,11 +67,11 @@
         <td><input type="file" name="img_path" accept=".png, .jpg, .jpeg"></td>
         </tr>
         </table>
+        </div>
 
         <div style="text-align: right;"><input type="submit" value="更新">
         <a href="{{ route('products.show', $product->id) }}"><button type='button'>戻る</button></a>
-        </div>
-      
+        
       </form>
       </table>
       </div>  

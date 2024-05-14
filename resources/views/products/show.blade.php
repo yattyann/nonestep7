@@ -32,11 +32,11 @@
         <th>コメント</th><td>{{$product->comment}}</td>
       </tr>
   </table>
+  </div>
 
   <div style="text-align: right;">
     <a href="{{ route('products.edit',$product->id) }}"><button type='button'>編集</button></a>
     <a href="{{ route('products.index',$product->id) }}"><button type='button'>戻る</button></a>
-  </div>
 
 </div>
 @endsection

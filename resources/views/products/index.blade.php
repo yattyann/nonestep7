@@ -31,6 +31,7 @@
         <th>価格</th>
         <th>在庫数</th>
         <th>メーカー名</th>
+        <th> </th>
         <th><a href="{{ route('products.create') }}"><button>新規登録</button></a></th>
       </tr>
 

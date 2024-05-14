@@ -152,7 +152,7 @@ class ProductController extends Controller
         $product->save();
 
     // リダイレクトまたはレスポンスを返す
-        return redirect()->route('products.index')->with('success', '商品情報を更新しました。');
+        return redirect()->route('products.edit',$product->id)->with('success', '商品情報を更新しました。');
     }
 
     /**
