@@ -14,20 +14,46 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function index(Request $request)
-    {
-        $keyword = $request->input('keyword');
-          
-        // 検索キーワードがある場合は、商品名にキーワードを含む商品を検索する
-        if (!empty($keyword)) {
-            $products = Product::where('product_name', 'like', '%' . $keyword . '%')->where('company_id', $request->get('company_id'))->get();
-        } else {
-            $products = Product::all();
-        }
-         
-        $companies = Company::all(); // ここで会社情報を取得する
-         
-        return view('products.index', compact('companies','products'));
+     public function index(Request $request)
+{
+    $query = Product::query();
+
+    // キーワード、メーカーIDによるフィルタリング
+    if ($request->has('keyword')) {
+        $query->where('product_name', 'like', '%' . $request->keyword . '%');
+    }
+
+    if ($request->has('company_id') && $request->company_id != '') {
+        $query->where('company_id', $request->company_id);
+    }
+
+    // 価格の下限と上限によるフィルタリング
+    if ($request->has('min_price')) {
+    $query->where('price', '>=', $request->input('min_price'));
+    }
+    if ($request->has('max_price')) {
+    $query->where('price', '<=', $request->input('max_price'));
+    }
+
+
+    $products = $query->get();
+
+    if ($request->ajax()) {
+        return response()->json([
+            'products' => $products->map(function ($product) {
+                return [
+                    'id' => $product->id,
+                    'img_path' => $product->img_path,
+                    'product_name' => $product->product_name,
+                    'price' => $product->price,
+                    'stock' => $product->stock,
+                    'company_name' => $product->company->company_name,
+                ];
+            })
+        ]);
+    }
+         $companies = Company::all();
+         return view('products.index', compact('products', 'companies'));
     }
      
     /**
