@@ -23,4 +23,6 @@ Route::middleware('auth')->group(function () {
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::resource('/products', App\Http\Controllers\ProductController::class)->except(['destroy']);
 Route::delete('/products/{product}', [App\Http\Controllers\ProductController::class, 'destroy'])->name('products.destroy');
+Route::get('/products/search', [ProductController::class, 'search'])->name('products.search');
+
 });

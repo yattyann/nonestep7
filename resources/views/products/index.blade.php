@@ -1,3 +1,5 @@
+<!-- resources/views/products/index.blade.php -->
+
 @extends('layouts.main')
 @section('title','商品一覧')
 @section('page-title','商品一覧')
@@ -9,14 +11,19 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     document.querySelector('.sort-area form').addEventListener('submit', function (event) {
+        event.preventDefault();
         fetchProducts();
     });
 
     function fetchProducts() {
         const keyword = document.querySelector('input[name="keyword"]').value;
         const company_id = document.querySelector('select[name="company_id"]').value;
+        const min_price = document.querySelector('input[name="min_price"]').value;
+        const max_price = document.querySelector('input[name="max_price"]').value;
+        const min_stock = document.querySelector('input[name="min_stock"]').value;
+        const max_stock = document.querySelector('input[name="max_stock"]').value;
 
-        fetch(`{{ route('products.index') }}?keyword=${encodeURIComponent(keyword)}&company_id=${encodeURIComponent(company_id)}`)
+        fetch(`{{ route('products.search') }}?keyword=${encodeURIComponent(keyword)}&company_id=${encodeURIComponent(company_id)}&min_price=${encodeURIComponent(min_price)}&max_price=${encodeURIComponent(max_price)}&min_stock=${encodeURIComponent(min_stock)}&max_stock=${encodeURIComponent(max_stock)}`)
             .then(response => response.json())
             .then(data => {
                 const tableBody = document.querySelector('table tbody');
@@ -62,6 +69,8 @@ document.addEventListener('DOMContentLoaded', function () {
     <!-- 価格の下限と上限の入力フィールドを追加 -->
     <input type="text" placeholder="価格下限" name="min_price">
     <input type="text" placeholder="価格上限" name="max_price">
+    <input type="text" placeholder="在庫数下限" name="min_stock">
+    <input type="text" placeholder="在庫数上限" name="max_stock">
     <button type="submit">検索</button>
   </form>
 </div>

@@ -35,6 +35,13 @@ class ProductController extends Controller
     $query->where('price', '<=', $request->input('max_price'));
     }
 
+    // 在庫数の下限と上限によるフィルタリング
+    if ($request->has('min_stock')) {
+    $query->where('stock', '>=', $request->input('min_stock'));
+    }
+    if ($request->has('max_stock')) {
+    $query->where('stock', '<=', $request->input('max_stock'));
+    }
 
     $products = $query->get();
 
@@ -55,7 +62,47 @@ class ProductController extends Controller
          $companies = Company::all();
          return view('products.index', compact('products', 'companies'));
     }
-     
+
+public function search(Request $request)
+{
+    $keyword = $request->input('keyword');
+    $minPrice = $request->input('min_price');
+    $maxPrice = $request->input('max_price');
+    $companyId = $request->input('company_id');
+    $minStock = $request->input('min_stock');
+    $maxStock = $request->input('max_stock');
+
+    $query = Product::query();
+
+    if (!empty($keyword)) {
+        $query->where('product_name', 'like', '%' . $keyword . '%');
+    }
+
+    if (!empty($minPrice)) {
+        $query->where('price', '>=', $minPrice);
+    }
+
+    if (!empty($maxPrice)) {
+        $query->where('price', '<=', $maxPrice);
+    }
+
+    if (!empty($companyId)) {
+        $query->where('company_id', $companyId);
+    }
+
+    if (!empty($minStock)) {
+        $query->where('stock', '>=', $minStock);
+    }
+
+    if (!empty($maxStock)) {
+        $query->where('stock', '<=', $maxStock);
+    }
+
+    $products = $query->with('company')->get();
+
+    return response()->json(['products' => $products]);
+}
+
     /**
      * Show the form for creating a new resource.
      *
