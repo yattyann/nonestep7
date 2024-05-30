@@ -1,60 +1,9 @@
-<!-- resources/views/products/index.blade.php -->
-
 @extends('layouts.main')
 @section('title','商品一覧')
 @section('page-title','商品一覧')
 
 @section('head')
 <link rel="stylesheet" type="text/css" href="{{ asset('css/index.css') }}">
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    document.querySelector('.sort-area form').addEventListener('submit', function (event) {
-        event.preventDefault();
-        fetchProducts();
-    });
-
-    function fetchProducts() {
-        const keyword = document.querySelector('input[name="keyword"]').value;
-        const company_id = document.querySelector('select[name="company_id"]').value;
-        const min_price = document.querySelector('input[name="min_price"]').value;
-        const max_price = document.querySelector('input[name="max_price"]').value;
-        const min_stock = document.querySelector('input[name="min_stock"]').value;
-        const max_stock = document.querySelector('input[name="max_stock"]').value;
-
-        fetch(`{{ route('products.search') }}?keyword=${encodeURIComponent(keyword)}&company_id=${encodeURIComponent(company_id)}&min_price=${encodeURIComponent(min_price)}&max_price=${encodeURIComponent(max_price)}&min_stock=${encodeURIComponent(min_stock)}&max_stock=${encodeURIComponent(max_stock)}`)
-            .then(response => response.json())
-            .then(data => {
-                const tableBody = document.querySelector('table tbody');
-                tableBody.innerHTML = '';
-                data.products.forEach(product => {
-                    const row = document.createElement('tr');
-
-                    row.innerHTML = `
-                        <td>${product.id}</td>
-                        <td><img src="{{ asset('storage/productImages/') }}/${product.img_path ? product.img_path : 'default.jpg'}" style="width: 100px; height: 100px; object-fit: cover;"></td>
-                        <td>${product.product_name}</td>
-                        <td>${product.price}</td>
-                        <td>${product.stock}</td>
-                        <td>${product.company_name}</td>
-                        <td><a href="{{ url('products') }}/${product.id}"><button>詳細</button></a></td>
-                        <td>
-                            <form action="{{ url('products') }}/${product.id}" method="POST" onsubmit="return confirm('本当に削除してもよろしいですか？');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit">削除</button>
-                            </form>
-                        </td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-            })
-            .catch(error => console.error('Error:', error));
-    }
-});
-</script>
-
 @endsection
 
 @section('sort')
@@ -67,13 +16,25 @@ document.addEventListener('DOMContentLoaded', function () {
       @endforeach
     </select>
     <!-- 価格の下限と上限の入力フィールドを追加 -->
-    <input type="text" placeholder="価格下限" name="min_price">
-    <input type="text" placeholder="価格上限" name="max_price">
-    <input type="text" placeholder="在庫数下限" name="min_stock">
-    <input type="text" placeholder="在庫数上限" name="max_stock">
+    <div>
+        <label for="min_price">価格下限:</label>
+        <input type="number" name="min_price" id="min_price" value="{{ request('min_price') }}">
+    </div>
+    <div>
+        <label for="max_price">価格上限:</label>
+        <input type="number" name="max_price" id="max_price" value="{{ request('max_price') }}">
+    </div>
+    <div>
+        <label for="min_stock">在庫下限:</label>
+        <input type="number" name="min_stock" id="min_stock" value="{{ request('min_stock') }}">
+    </div>
+    <div>
+        <label for="max_stock">在庫上限:</label>
+        <input type="number" name="max_stock" id="max_stock" value="{{ request('max_stock') }}">
+    </div>
     <button type="submit">検索</button>
   </form>
-</div>
+  </div>
 @endsection
 
 @section('content')
@@ -119,3 +80,4 @@ document.addEventListener('DOMContentLoaded', function () {
   </table>
 </div>
 @endsection
+
