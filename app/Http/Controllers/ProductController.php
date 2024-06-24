@@ -19,31 +19,31 @@ class ProductController extends Controller
         $query = Product::query();
 
         // キーワード、メーカーIDによるフィルタリング
-        if  ($request->has('keyword')) {
+        if ($request->has('keyword') && isset($request->company_id)) {
             $query->where('product_name', 'like', '%' . $request->keyword . '%');
         }
 
-        if  ($request->has('company_id') && $request->company_id != '') {
+        if ($request->has('company_id') && isset($request->company_id)) {
             $query->where('company_id', $request->company_id);
         }
 
         // 価格の下限と上限によるフィルタリング
-        if ($request->has('min_price')) {
+        if ($request->has('min_price') && isset($request->min_price)) {
             $intMinPrice = intval($request->input('min_price'));
-            $query->where('price', '<=', $intMinPrice);
+            $query->where('price', '>=', $intMinPrice);
         }
-        if ($request->has('max_price')) {
+        if ($request->has('max_price') && isset($request->max_price)) {
             $intMaxPrice = intval($request->input('max_price'));
             $query->where('price', '<=', $intMaxPrice);
         }
 
         // 在庫数の下限と上限によるフィルタリング
-        if ($request->has('min_stock')) {
+        if ($request->has('min_stock') && isset($request->min_stock)) {
             $intMinstock = intval($request->input('min_stock'));
-            $query->where('stock', '<=', $intMinstock);
+            $query->where('stock', '>=', $intMinstock);
         }
 
-        if ($request->has('max_stock')) {
+        if ($request->has('max_stock') && isset($request->max_stock)) {
             $intMaxstock = intval($request->input('max_stock'));
             $query->where('stock', '<=', $intMaxstock);
         }
