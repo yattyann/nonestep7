@@ -14,6 +14,49 @@ class ProductController extends Controller
     * @return \Illuminate\Http\Response
     */
 
+    // Product::query() は、Productモデルの新しいクエリビルダーインスタンスを作成します。このクエリビルダーを使用して、後で条件を追加
+    // 新井さんが仰る『indexアクションで実装済みだと思う』は下記のことになるのか・・・？
+    public function search(Request $request)
+{
+    $query = Product::query();
+
+    // リクエストに keyword パラメータが含まれている場合、商品名にそのキーワードを含む商品を検索
+    // 部分一致検索を行うために、like 演算子とワイルドカード (%) を使用
+    if ($request->filled('keyword')) {
+        $query->where('product_name', 'like', '%' . $request->keyword . '%');
+    }
+
+    // company_id がリクエストに含まれている場合、そのメーカーIDに一致する商品を検索
+    if ($request->filled('company_id')) {
+        $query->where('company_id', $request->company_id);
+    }
+
+    // min_price または max_price がリクエストに含まれている場合、その価格範囲内の商品を検索
+    if ($request->filled('min_price')) {
+        $query->where('price', '>=', $request->min_price);
+    }
+
+    if ($request->filled('max_price')) {
+        $query->where('price', '<=', $request->max_price);
+    }
+
+    // min_stock または max_stock がリクエストに含まれている場合、その在庫範囲内の商品を検索 
+    if ($request->filled('min_stock')) {
+        $query->where('stock', '>=', $request->min_stock);
+    }
+
+    if ($request->filled('max_stock')) {
+        $query->where('stock', '<=', $request->max_stock);
+    }
+    
+    // 追加された条件に基づいてクエリを実行し、結果を取得
+    $products = $query->get();
+
+    // フィルタリングされた商品のリストをJSON形式で返す
+    return response()->json(['products' => $products]);
+}
+
+// 新井さんが仰る『indexアクションで実装済みだと思う』は下記のことになるのか・・・？だとすれば重複している。。。？
     public function index(Request $request)
     {
         $query = Product::query();

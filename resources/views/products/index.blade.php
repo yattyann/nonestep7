@@ -7,13 +7,15 @@
 @endsection
 
 @section('script')
-
+  <!-- jQueryの読み込み -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <!-- スクリプトの実行 -->
   <script src="{{ asset('js/index.js') }}"></script>
 @endsection
 
 @section('sort')
 <div class="sort-area">
-  <form method="get" action="{{ route('products.index') }}">
+  <form method="get" action="{{ route('products.index') }}" id="search-form">
     <input type="text" class="form-input" placeholder="キーワードを入力してください" name="keyword">
     <select name="company_id" class="form-select">
       <option value="">メーカーを選択</option>
@@ -41,8 +43,11 @@
     <button type="submit" class="form-button">検索</button>
   </form>
 </div>
-
+<div id="search-results">
+  <!-- 検索結果をここに表示 {!! $products->appends(request()->query())->links('') !!} -->
+</div>
 @endsection
+
 
 @section('content')
 <div class="container">
