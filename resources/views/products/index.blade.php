@@ -43,15 +43,13 @@
     <button type="submit" class="form-button">検索</button>
   </form>
 </div>
-<div id="search-results">
-  <!-- 検索結果をここに表示 {!! $products->appends(request()->query())->links('') !!} -->
-</div>
+
 @endsection
 
 
 @section('content')
 <div class="container">
-<div style="border: 2px solid black; padding: 5px;">
+<div style="border: 2px solid black; padding: 5px;" id="search-results">
   <table>  
       <thead>
         <tr>
@@ -67,7 +65,6 @@
       </thead>
       <tbody>
 @foreach($products as $product)
-        <tr>
           <td>{{ $product->id }}</td>
           @if($product->img_path)
           <td><img src="{{ asset('storage/productImages/' . $product->img_path) }}" style="width: 100px; height: 100px; object-fit: cover;"></td>

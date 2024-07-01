@@ -18,7 +18,7 @@ class ProductController extends Controller
     // 新井さんが仰る『indexアクションで実装済みだと思う』は下記のことになるのか・・・？
     public function search(Request $request)
 {
-    $query = Product::query();
+    $query = Product::query()->join('companies', 'companies.id', '=', 'products.id');
 
     // リクエストに keyword パラメータが含まれている場合、商品名にそのキーワードを含む商品を検索
     // 部分一致検索を行うために、like 演算子とワイルドカード (%) を使用
@@ -222,21 +222,21 @@ class ProductController extends Controller
             return redirect()->route('products.edit',$product->id)->with('success', '商品情報を更新しました。');
         }
 
-        /**
-         * Remove the specified resource from storage.
-         *
-         * @param  int  $id
-         * @return \Illuminate\Http\Response
-         */
-        public function destroy($id)
-        {
-        // 指定されたIDに対応する商品を取得
-        $product = Product::findOrFail($id);
+    /**
+    * Remove the specified resource from storage.
+    *
+    * @param  int  $id
+    * @return \Illuminate\Http\JsonResponse
+    */
+    public function destroy($id)
+    {
+    // 指定されたIDに対応する商品を取得
+    $product = Product::findOrFail($id);
 
-        // 商品を削除
-        $product->delete();
+    // 商品を削除
+    $product->delete();
 
-        // リダイレクトまたはレスポンスを返す
-        return redirect()->route('products.index')->with('success', '商品を削除しました。');
-        }
+    // JSONレスポンスを返す
+    return response()->json(['success' => '商品を削除しました。']);
     }
+}
