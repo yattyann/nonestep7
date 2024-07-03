@@ -37,13 +37,13 @@ $(document).ready(function() {
                       row.append('<td>' + product.company_name + '</td>');
 
                       // `showProductUrl`は製品詳細ページのURLテンプレートで、`:id`プレースホルダーを含む
-                      var showUrl = showProductUrl.replace(':id', product.id);
+                      var showUrl = "/nonestep7/public/products/show/" + product.id;
 
                       // 新しいテーブル行のHTMLを作成し、詳細ボタンを追加
                       row.append('<td><a href="' + showUrl + '"><button>詳細</button></a></td>');
 
                       // `destroyProductUrl`は製品削除のURLテンプレートで、`:id`プレースホルダーを含む
-                      var destroyUrl = destroyProductUrl.replace(':id', product.id);
+                      var destroyUrl = "/nonestep7/public/products/index/" + product.id;
 
                       // CSRFトークンを取得
                       var csrfToken = $('meta[name="csrf-token"]').attr('content');
