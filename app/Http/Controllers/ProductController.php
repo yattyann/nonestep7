@@ -18,6 +18,7 @@ class ProductController extends Controller
     // 新井さんが仰る『indexアクションで実装済みだと思う』は下記のことになるのか・・・？
     public function search(Request $request)
 {
+    //products テーブルと companies テーブルを結合するためのもの
     $query = Product::query()->join('companies', 'companies.id', '=', 'products.id');
 
     // リクエストに keyword パラメータが含まれている場合、商品名にそのキーワードを含む商品を検索
