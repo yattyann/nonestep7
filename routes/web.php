@@ -20,13 +20,10 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::middleware('auth')->group(function () {
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::resource('/products', App\Http\Controllers\ProductController::class);
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::resource('/products', App\Http\Controllers\ProductController::class);
 
-//検索機能の非同期処理化
-Route::get('/api/products', [App\Http\Controllers\ProductController::class, 'search'])->name('products.search');
-
-//削除処理の非同期処理化
-Route::delete('/products/{id}', [App\Http\Controllers\ProductController::class, 'destroy'])->name('products.destroy');
+    //検索機能の非同期処理化
+    Route::get('/api/products', [App\Http\Controllers\ProductController::class, 'search'])->name('products.search');
 
 });
