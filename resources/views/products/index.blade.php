@@ -3,12 +3,13 @@
 @section('page-title','商品一覧')
 
 @section('head')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('css/index.css') }}">
 @endsection
 
 @section('script')
   <!-- jQueryの読み込み -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   <!-- スクリプトの実行 -->
   <script src="{{ asset('js/index.js') }}"></script>
 @endsection
@@ -46,7 +47,6 @@
 
 @endsection
 
-
 @section('content')
 <div class="container">
   <!-- 新規登録ボタン -->
@@ -54,3 +54,4 @@
   
 </div>
 @endsection
+

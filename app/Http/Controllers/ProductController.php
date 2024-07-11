@@ -9,93 +9,84 @@ use App\Models\Company;
 class ProductController extends Controller
 {
     /**
-    * Display a listing of the resource.
-    *
-    * @return \Illuminate\Http\Response
-    */
-
-    // Product::query() は、Productモデルの新しいクエリビルダーインスタンスを作成します。このクエリビルダーを使用して、後で条件を追加
-    // 新井さんが仰る『indexアクションで実装済みだと思う』は下記のことになるのか・・・？
-    public function search(Request $request)
-{
-    //products テーブルと companies テーブルを結合するためのもの
-    $query = Product::select('products.*','company_name')->join('companies', 'companies.id', '=', 'products.company_id');
-
-    // リクエストに keyword パラメータが含まれている場合、商品名にそのキーワードを含む商品を検索
-    // 部分一致検索を行うために、like 演算子とワイルドカード (%) を使用
-    if ($request->filled('keyword')) {
-        $query->where('product_name', 'like', '%' . $request->keyword . '%');
-    }
-
-    // company_id がリクエストに含まれている場合、そのメーカーIDに一致する商品を検索
-    if ($request->filled('company_id')) {
-        $query->where('company_id', $request->company_id);
-    }
-
-    // min_price または max_price がリクエストに含まれている場合、その価格範囲内の商品を検索
-    if ($request->filled('min_price')) {
-        $query->where('price', '>=', $request->min_price);
-    }
-
-    if ($request->filled('max_price')) {
-        $query->where('price', '<=', $request->max_price);
-    }
-
-    // min_stock または max_stock がリクエストに含まれている場合、その在庫範囲内の商品を検索 
-    if ($request->filled('min_stock')) {
-        $query->where('stock', '>=', $request->min_stock);
-    }
-
-    if ($request->filled('max_stock')) {
-        $query->where('stock', '<=', $request->max_stock);
-    }
-    
-    // 追加された条件に基づいてクエリを実行し、結果を取得
-    $products = $query->get();
-
-    // フィルタリングされた商品のリストをJSON形式で返す
-    return response()->json(['products' => $products]);
-}
-
-// 新井さんが仰る『indexアクションで実装済みだと思う』は下記のことになるのか・・・？だとすれば重複している。。。？
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(Request $request)
     {
         $query = Product::query();
 
         // キーワード、メーカーIDによるフィルタリング
-        if ($request->has('keyword') && isset($request->company_id)) {
+        if ($request->filled('keyword')) {
             $query->where('product_name', 'like', '%' . $request->keyword . '%');
         }
 
-        if ($request->has('company_id') && isset($request->company_id)) {
+        if ($request->filled('company_id')) {
             $query->where('company_id', $request->company_id);
         }
 
         // 価格の下限と上限によるフィルタリング
-        if ($request->has('min_price') && isset($request->min_price)) {
-            $intMinPrice = intval($request->input('min_price'));
-            $query->where('price', '>=', $intMinPrice);
+        if ($request->filled('min_price')) {
+            $query->where('price', '>=', $request->min_price);
         }
-        if ($request->has('max_price') && isset($request->max_price)) {
-            $intMaxPrice = intval($request->input('max_price'));
-            $query->where('price', '<=', $intMaxPrice);
+
+        if ($request->filled('max_price')) {
+            $query->where('price', '<=', $request->max_price);
         }
 
         // 在庫数の下限と上限によるフィルタリング
-        if ($request->has('min_stock') && isset($request->min_stock)) {
-            $intMinstock = intval($request->input('min_stock'));
-            $query->where('stock', '>=', $intMinstock);
+        if ($request->filled('min_stock')) {
+            $query->where('stock', '>=', $request->min_stock);
         }
 
-        if ($request->has('max_stock') && isset($request->max_stock)) {
-            $intMaxstock = intval($request->input('max_stock'));
-            $query->where('stock', '<=', $intMaxstock);
+        if ($request->filled('max_stock')) {
+            $query->where('stock', '<=', $request->max_stock);
+        }
+
+        $products = $query->get();
+        $companies = Company::all();
+
+        return view('products.index', compact('products', 'companies'));
+    }
+
+    /**
+     * Search for products via AJAX.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function search(Request $request)
+    {
+        $query = Product::select('products.*', 'company_name')
+            ->join('companies', 'companies.id', '=', 'products.company_id');
+
+        if ($request->filled('keyword')) {
+            $query->where('product_name', 'like', '%' . $request->keyword . '%');
+        }
+
+        if ($request->filled('company_id')) {
+            $query->where('company_id', $request->company_id);
+        }
+
+        if ($request->filled('min_price')) {
+            $query->where('price', '>=', $request->min_price);
+        }
+
+        if ($request->filled('max_price')) {
+            $query->where('price', '<=', $request->max_price);
+        }
+
+        if ($request->filled('min_stock')) {
+            $query->where('stock', '>=', $request->min_stock);
+        }
+
+        if ($request->filled('max_stock')) {
+            $query->where('stock', '<=', $request->max_stock);
         }
 
         $products = $query->get();
 
-        $companies = Company::all();
-        return view('products.index', compact('products', 'companies'));
+        return response()->json(['products' => $products]);
     }
 
         /**
