@@ -16,7 +16,7 @@ $(document).ready(function() {
         results.empty();
 
         if (response.products.length > 0) {
-          var table = $('<table>').addClass('table');
+          var table = $('<table>').attr('id', 'product-table').addClass('table tablesorter');
           var thead = $('<thead>').append('<tr><th>ID</th><th>商品画像</th><th>商品名</th><th>価格</th><th>在庫数</th><th>メーカー名</th><th></th><th></th></tr>');
           table.append(thead);
 
@@ -29,9 +29,9 @@ $(document).ready(function() {
             } else {
               row.append('<td>商品画像なし</td>');
             }
-            row.append('<td>' + product.product_name + '</td>');
-            row.append('<td>' + product.price + '</td>');
-            row.append('<td>' + product.stock + '</td>');
+            row.append('<td><button class="product-name-btn" data-id="' + product.id + '">' + product.product_name + '</button></td>');
+            row.append('<td><button class="product-price-btn" data-id="' + product.id + '">' + product.price + '</button></td>');
+            row.append('<td><button class="product-stock-btn" data-id="' + product.id + '">' + product.stock + '</button></td>');
             row.append('<td>' + product.company_name + '</td>');
 
             var showUrl = "/nonestep7/public/products/show/" + product.id;
@@ -45,7 +45,13 @@ $(document).ready(function() {
           table.append(tbody);
           results.append(table);
 
+          // tablesorterを再初期化
+          $("#product-table").tablesorter({
+            sortList: [[0,1]] // 初期表示時はID降順
+          });
+
           bindDeleteForms();
+          bindProductButtons();
         } else {
           results.append('<p>該当する商品はありません。</p>');
         }
@@ -87,31 +93,21 @@ $(document).ready(function() {
       });
     });
   }
-});
 
-$(".deletebutton").on('click', function(event) {
-  event.preventDefault();
+  function bindProductButtons() {
+    $(".product-name-btn").on('click', function() {
+      const productId = $(this).data('id');
+      alert('商品名のボタンがクリックされました。ID: ' + productId);
+    });
 
-  if (!confirm('本当に削除してもよろしいですか？')) {
-    return;
+    $(".product-price-btn").on('click', function() {
+      const productId = $(this).data('id');
+      alert('価格のボタンがクリックされました。ID: ' + productId);
+    });
+
+    $(".product-stock-btn").on('click', function() {
+      const productId = $(this).data('id');
+      alert('在庫数のボタンがクリックされました。ID: ' + productId);
+    });
   }
-
-  const product_id = $(this).data("product-id");
-
-  $.ajax({
-    url: '/nonestep7/public/products/' + product_id,
-    type: 'POST',
-    data: {
-      _method: 'DELETE',
-      _token: $('meta[name="csrf-token"]').attr('content') // CSRFトークンを追加
-    },
-    success: function(response) {
-      $(event.target).closest('tr').remove();
-      alert('削除が成功しました');
-    },
-    error: function(xhr) {
-      console.error('削除処理中にエラーが発生しました', xhr.responseText);
-      alert('削除に失敗しました');
-    }
-  });
 });

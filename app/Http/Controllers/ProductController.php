@@ -14,80 +14,77 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {
-        $query = Product::query();
+{
+    $query = Product::query();
 
-        // キーワード、メーカーIDによるフィルタリング
-        if ($request->filled('keyword')) {
-            $query->where('product_name', 'like', '%' . $request->keyword . '%');
-        }
-
-        if ($request->filled('company_id')) {
-            $query->where('company_id', $request->company_id);
-        }
-
-        // 価格の下限と上限によるフィルタリング
-        if ($request->filled('min_price')) {
-            $query->where('price', '>=', $request->min_price);
-        }
-
-        if ($request->filled('max_price')) {
-            $query->where('price', '<=', $request->max_price);
-        }
-
-        // 在庫数の下限と上限によるフィルタリング
-        if ($request->filled('min_stock')) {
-            $query->where('stock', '>=', $request->min_stock);
-        }
-
-        if ($request->filled('max_stock')) {
-            $query->where('stock', '<=', $request->max_stock);
-        }
-
-        $products = $query->get();
-        $companies = Company::all();
-
-        return view('products.index', compact('products', 'companies'));
+    // キーワード、メーカーIDによるフィルタリング
+    if ($request->filled('keyword')) {
+        $query->where('product_name', 'like', '%' . $request->keyword . '%');
     }
 
-    /**
-     * Search for products via AJAX.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function search(Request $request)
-    {
-        $query = Product::select('products.*', 'company_name')
-            ->join('companies', 'companies.id', '=', 'products.company_id');
-
-        if ($request->filled('keyword')) {
-            $query->where('product_name', 'like', '%' . $request->keyword . '%');
-        }
-
-        if ($request->filled('company_id')) {
-            $query->where('company_id', $request->company_id);
-        }
-
-        if ($request->filled('min_price')) {
-            $query->where('price', '>=', $request->min_price);
-        }
-
-        if ($request->filled('max_price')) {
-            $query->where('price', '<=', $request->max_price);
-        }
-
-        if ($request->filled('min_stock')) {
-            $query->where('stock', '>=', $request->min_stock);
-        }
-
-        if ($request->filled('max_stock')) {
-            $query->where('stock', '<=', $request->max_stock);
-        }
-
-        $products = $query->get();
-
-        return response()->json(['products' => $products]);
+    if ($request->filled('company_id')) {
+        $query->where('company_id', $request->company_id);
     }
+
+    // 価格の下限と上限によるフィルタリング
+    if ($request->filled('min_price')) {
+        $query->where('price', '>=', $request->min_price);
+    }
+
+    if ($request->filled('max_price')) {
+        $query->where('price', '<=', $request->max_price);
+    }
+
+    // 在庫数の下限と上限によるフィルタリング
+    if ($request->filled('min_stock')) {
+        $query->where('stock', '>=', $request->min_stock);
+    }
+
+    if ($request->filled('max_stock')) {
+        $query->where('stock', '<=', $request->max_stock);
+    }
+
+    // IDの昇順でソート
+    $products = $query->orderBy('id', 'asc')->get();
+    $companies = Company::all();
+
+    return view('products.index', compact('products', 'companies'));
+}
+
+public function search(Request $request)
+{
+    $query = Product::select('products.*', 'company_name')
+        ->join('companies', 'companies.id', '=', 'products.company_id');
+
+    if ($request->filled('keyword')) {
+        $query->where('product_name', 'like', '%' . $request->keyword . '%');
+    }
+
+    if ($request->filled('company_id')) {
+        $query->where('company_id', $request->company_id);
+    }
+
+    if ($request->filled('min_price')) {
+        $query->where('price', '>=', $request->min_price);
+    }
+
+    if ($request->filled('max_price')) {
+        $query->where('price', '<=', $request->max_price);
+    }
+
+    if ($request->filled('min_stock')) {
+        $query->where('stock', '>=', $request->min_stock);
+    }
+
+    if ($request->filled('max_stock')) {
+        $query->where('stock', '<=', $request->max_stock);
+    }
+
+    // IDの昇順でソート
+    $products = $query->orderBy('id', 'asc')->get();
+
+    return response()->json(['products' => $products]);
+}
 
         /**
          * Show the form for creating a new resource.

@@ -83,16 +83,64 @@
 .alert {
   background-color: #ff0000;
   color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
 }
 
 .item {
-  margin-right: 20px; /* 要素間の余白を設定 */
-  min-width: 200px; /* 要素の最小幅を設定 */
+  margin-bottom: 20px; /* 要素間の余白を設定 */
   text-align: right; /* テキストを右寄せにする */
 }
 
 .input-field {
-  width: 300px;
+  width: 100%;
+  max-width: 600px; /* 最大幅を600pxに設定 */
+  min-width: 300px; /* 最小幅を300pxに設定 */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
+/* レスポンシブデザイン */
+@media (max-width: 768px) {
+  .sort-area {
+    flex-direction: column;
+  }
 
+  .sort-area .form-input,
+  .sort-area .form-select {
+    margin-bottom: 10px;
+    margin-right: 0;
+    min-width: 100%;
+  }
+
+  .sort-area .form-button {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .sort-area .filter-group {
+    flex-direction: column;
+  }
+
+  .sort-area .filter-item {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .container th,
+  .container td {
+    padding: 10px;
+  }
+
+  .container td img {
+    width: 75px;
+    height: 75px;
+  }
+
+  .input-field {
+    width: 100%;
+    max-width: 100%; /* 最大幅を100%に設定 */
+  }
+}
