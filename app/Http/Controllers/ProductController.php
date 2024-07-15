@@ -19,7 +19,7 @@ class ProductController extends Controller
     public function search(Request $request)
 {
     //products テーブルと companies テーブルを結合するためのもの
-    $query = Product::select('products.*','company_name')->join('companies', 'companies.id', '=', 'products.company_id');
+    $query = Product::query()->join('companies', 'companies.id', '=', 'products.id');
 
     // リクエストに keyword パラメータが含まれている場合、商品名にそのキーワードを含む商品を検索
     // 部分一致検索を行うために、like 演算子とワイルドカード (%) を使用
