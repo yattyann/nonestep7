@@ -34,7 +34,7 @@ $(document).ready(function() {
             row.append('<td>' + product.stock + '</td>');
             row.append('<td>' + product.company_name + '</td>');
 
-            var showUrl = "/nonestep7/public/products/show/" + product.id;
+            var showUrl = "/nonestep7/public/products/" + product.id;
             row.append('<td><a href="' + showUrl + '"><button>詳細</button></a></td>');
 
             row.append('<td><button class="deletebutton" type="button" data-product-id="' + product.id + '">削除</button></td>');
@@ -45,7 +45,6 @@ $(document).ready(function() {
           table.append(tbody);
           results.append(table);
 
-          bindDeleteForms();
         } else {
           results.append('<p>該当する商品はありません。</p>');
         }
@@ -62,34 +61,9 @@ $(document).ready(function() {
   });
 
   searchProducts();
-
-  function bindDeleteForms() {
-    $(".deletebutton").on('click', function(event) {
-      event.preventDefault();
-
-      if (!confirm('本当に削除してもよろしいですか？')) {
-        return;
-      }
-
-      const product_id = $(this).data("product-id");
-
-      $.ajax({
-        url: '/nonestep7/public/products/' + product_id,
-        type: 'DELETE',
-        success: function(response) {
-          $(event.target).closest('tr').remove();
-          alert('削除が成功しました');
-        },
-        error: function(xhr) {
-          console.error('削除処理中にエラーが発生しました', xhr.responseText);
-          alert('削除に失敗しました');
-        }
-      });
-    });
-  }
 });
 
-$(".deletebutton").on('click', function(event) {
+$(document).on('click', ".deletebutton", function(event) {
   event.preventDefault();
 
   if (!confirm('本当に削除してもよろしいですか？')) {
@@ -101,9 +75,9 @@ $(".deletebutton").on('click', function(event) {
   $.ajax({
     url: '/nonestep7/public/products/' + product_id,
     type: 'POST',
+    headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
     data: {
       _method: 'DELETE',
-      _token: $('meta[name="csrf-token"]').attr('content') // CSRFトークンを追加
     },
     success: function(response) {
       $(event.target).closest('tr').remove();
