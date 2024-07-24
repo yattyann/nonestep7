@@ -14,12 +14,12 @@ $(document).ready(function() {
       success: function(response) {
         var results = $('#search-results');
         results.empty();
-
+  
         if (response.products.length > 0) {
-          var table = $('<table>').addClass('table');
+          var table = $('<table>').addClass('table tablesorter'); // 'tablesorter'クラスを追加
           var thead = $('<thead>').append('<tr><th>ID</th><th>商品画像</th><th>商品名</th><th>価格</th><th>在庫数</th><th>メーカー名</th><th></th><th></th></tr>');
           table.append(thead);
-
+  
           var tbody = $('<tbody>');
           response.products.forEach(function(product) {
             var row = $('<tr>');
@@ -33,18 +33,23 @@ $(document).ready(function() {
             row.append('<td>' + product.price + '</td>');
             row.append('<td>' + product.stock + '</td>');
             row.append('<td>' + product.company_name + '</td>');
-
+  
             var showUrl = "/nonestep7/public/products/" + product.id;
             row.append('<td><a href="' + showUrl + '"><button>詳細</button></a></td>');
-
+  
             row.append('<td><button class="deletebutton" type="button" data-product-id="' + product.id + '">削除</button></td>');
-
+  
             tbody.append(row);
           });
-
+  
           table.append(tbody);
           results.append(table);
-
+  
+          // tablesorter プラグインの初期化
+          $(".tablesorter").tablesorter({
+            sortList: [[0,1]] // 初期表示時はid降順
+          });
+  
         } else {
           results.append('<p>該当する商品はありません。</p>');
         }

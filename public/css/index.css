@@ -1,6 +1,6 @@
 /* 検索エリア */
 .sort-area {
-  margin-bottom: 50px;
+  margin-bottom: 100px;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -11,16 +11,16 @@
 .sort-area .form-input,
 .sort-area .form-select {
   flex: 1 1 100%; /* 幅を100%に設定 */
-  margin-bottom: 10px;
-  padding: 15px; /* パディングを増やして大きくする */
-  border-radius: 5px;
+  margin-bottom: 20px;
+  padding: 10px; /* パディングを増やして大きくする */
+  border-radius: 20px;
   border: 1px solid #ccc;
-  max-width: 800px; /* 最大幅を設定 */
+  max-width: 1000px; /* 最大幅を設定 */
 }
 
 .sort-area .form-button {
-  padding: 15px 30px; /* パディングを増やして大きくする */
-  border-radius: 5px;
+  padding: 10px 20px; /* パディングを増やして大きくする */
+  border-radius: 20px;
   background-color: #007bff;
   color: #fff;
   border: none;
