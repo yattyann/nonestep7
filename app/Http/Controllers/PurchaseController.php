@@ -15,11 +15,8 @@ class PurchaseController extends Controller
         $result = [];
 
         try {
-            // トランザクションの開始
-            DB::beginTransaction();
-
             // 商品特定
-            $product = Product::where('id', $request->id)->first();
+            $product = Product::find($request->id);
 
             if (!$product) {
                 // 商品が見つからない場合のエラーハンドリング
@@ -36,6 +33,9 @@ class PurchaseController extends Controller
                 return response()->json($result, $statusCode, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);
             }
 
+            // トランザクション開始
+            DB::beginTransaction();
+
             // salesテーブルにレコードを追加する（在庫がある場合）
             Sale::create([
                 'product_id' => $product->id,
@@ -47,12 +47,12 @@ class PurchaseController extends Controller
             $product->stock -= $request->quantity;
             $product->save();
 
-            // トランザクションのコミット
+            // トランザクションをコミット
             DB::commit();
 
             $result['message'] = '購入が完了しました。';
         } catch (\Exception $e) {
-            // トランザクションのロールバック
+            // トランザクションをロールバック
             DB::rollBack();
             $statusCode = 500;
             $result['error'] = '購入処理中にエラーが発生しました。';

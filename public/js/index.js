@@ -17,7 +17,7 @@ $(document).ready(function() {
   
         if (response.products.length > 0) {
           var table = $('<table>').addClass('table tablesorter'); // 'tablesorter'クラスを追加
-          var thead = $('<thead>').append('<tr><th>ID</th><th>商品画像</th><th>商品名</th><th>価格</th><th>在庫数</th><th>メーカー名</th><th></th><th></th></tr>');
+          var thead = $('<thead>').append('<tr><th class="sortable">ID</th><th>商品画像</th><th class="sortable">商品名</th><th class="sortable">価格</th><th class="sortable">在庫数</th><th class="sortable">メーカー名</th><th></th><th></th></tr>');
           table.append(thead);
   
           var tbody = $('<tbody>');
@@ -47,6 +47,11 @@ $(document).ready(function() {
   
           // tablesorter プラグインの初期化
           $(".tablesorter").tablesorter({
+            headers: {
+              1: { sorter: false },  // 商品画像列をソート対象外にする
+              6: { sorter: false },  // 詳細ボタン列をソート対象外にする
+              7: { sorter: false }   // 削除ボタン列をソート対象外にする
+            },
             sortList: [[0,1]] // 初期表示時はid降順
           });
   
@@ -80,7 +85,7 @@ $(document).on('click', ".deletebutton", function(event) {
   $.ajax({
     url: '/nonestep7/public/products/' + product_id,
     type: 'POST',
-    headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
     data: {
       _method: 'DELETE',
     },
