@@ -16,7 +16,7 @@ class PurchaseController extends Controller
 
         try {
             // 商品特定
-            $product = Product::find($request->id);
+            $product = Product::where('id', $request->id)->first();
 
             if (!$product) {
                 // 商品が見つからない場合のエラーハンドリング
@@ -56,6 +56,7 @@ class PurchaseController extends Controller
             DB::rollBack();
             $statusCode = 500;
             $result['error'] = '購入処理中にエラーが発生しました。';
+            $result['error'] = $e->getMessage();
         }
 
         return response()->json($result, $statusCode, ['Content-Type' => 'application/json'], JSON_UNESCAPED_SLASHES);

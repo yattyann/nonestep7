@@ -52,7 +52,7 @@ $(document).ready(function() {
               6: { sorter: false },  // 詳細ボタン列をソート対象外にする
               7: { sorter: false }   // 削除ボタン列をソート対象外にする
             },
-            sortList: [[0,1]] // 初期表示時はid降順
+            
           });
   
         } else {

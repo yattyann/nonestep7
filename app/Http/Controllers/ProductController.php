@@ -84,7 +84,7 @@ class ProductController extends Controller
             $query->where('stock', '<=', $request->max_stock);
         }
 
-        $products = $query->get();
+        $products = $query->orderBy('id', 'asc')->get();
 
         return response()->json(['products' => $products]);
     }
