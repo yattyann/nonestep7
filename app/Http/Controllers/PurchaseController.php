@@ -16,7 +16,7 @@ class PurchaseController extends Controller
 
         try {
             // 商品特定
-            $product = Product::where('id', $request->id)->first();
+            $product = Product::find($request->id);
 
             if (!$product) {
                 // 商品が見つからない場合のエラーハンドリング
@@ -26,7 +26,7 @@ class PurchaseController extends Controller
             }
 
             // 在庫判定
-            if ($product->stock < $request->quantity) {
+            if ($product->stock < 1) {
                 // 在庫が不足している場合のエラーハンドリング
                 $statusCode = 400;
                 $result['error'] = '在庫が不足しています。';
@@ -39,12 +39,10 @@ class PurchaseController extends Controller
             // salesテーブルにレコードを追加する（在庫がある場合）
             Sale::create([
                 'product_id' => $product->id,
-                'quantity' => $request->quantity,
-                'price' => $product->price,
             ]);
 
             // productsテーブルの在庫数を減算する（在庫がある場合）
-            $product->stock -= $request->quantity;
+            $product->stock--; //後で復習8/2
             $product->save();
 
             // トランザクションをコミット
