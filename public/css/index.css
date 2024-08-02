@@ -1,4 +1,4 @@
-/* 検索エリア */
+/* 検索エリア 
 .sort-area {
   margin-bottom: 100px;
   display: flex;
@@ -7,18 +7,44 @@
   justify-content: space-between;
   width: 100%;
 }
+*/
 
-.sort-area .form-input,
-.sort-area .form-select {
-  flex: 1 1 100%; /* 幅を100%に設定 */
-  margin-bottom: 20px;
-  padding: 10px; /* パディングを増やして大きくする */
-  border-radius: 20px;
-  border: 1px solid #ccc;
-  max-width: 1000px; /* 最大幅を設定 */
+/*キーワード検索欄*/
+.form-input{
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 300px;
+  height: 30px; 
 }
 
-.sort-area .form-button {
+/*メーカー名欄*/
+.form-select {
+  flex:100%;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 300px;
+  height: 30px;
+   
+}
+
+/*
+.sort-area {
+  flex: 1 1 100%; 
+  margin-bottom: 20px;
+  padding: 10px; 
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  max-width: 1000px; 
+}
+*/
+
+.form-button {
   padding: 10px 20px; /* パディングを増やして大きくする */
   border-radius: 20px;
   background-color: #007bff;

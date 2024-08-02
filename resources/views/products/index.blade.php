@@ -52,8 +52,8 @@
     <button type="submit" class="form-button">検索</button>
 
     <!-- 新規登録ボタンを追加 -->
-    <div style="margin-top: 20px;">
-        <a href="{{ route('products.create') }}" class="form-button">新規登録</a>
+    <div class="button-container">
+      <a href="{{ route('products.create') }}" class="form-button">新規登録</a>
     </div>
   </form>
 </div>
