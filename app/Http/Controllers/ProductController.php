@@ -15,7 +15,12 @@ class ProductController extends Controller
      */
     public function index(Request $request)
 {
+<<<<<<< Updated upstream
     $query = Product::query();
+=======
+    //products テーブルと companies テーブルを結合するためのもの
+    $query = Product::query()->join('companies', 'companies.id', '=', 'products.company_id');
+>>>>>>> Stashed changes
 
     // キーワード、メーカーIDによるフィルタリング
     if ($request->filled('keyword')) {
