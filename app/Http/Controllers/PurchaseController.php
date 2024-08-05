@@ -42,7 +42,7 @@ class PurchaseController extends Controller
             ]);
 
             // productsテーブルの在庫数を減算する（在庫がある場合）
-            $product->stock--; 
+            $product->stock--; //後で復習8/2
             $product->save();
 
             // トランザクションをコミット

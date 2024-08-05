@@ -14,12 +14,12 @@ $(document).ready(function() {
       success: function(response) {
         var results = $('#search-results');
         results.empty();
-
+  
         if (response.products.length > 0) {
-          var table = $('<table>').attr('id', 'product-table').addClass('table tablesorter');
-          var thead = $('<thead>').append('<tr><th>ID</th><th>商品画像</th><th>商品名</th><th>価格</th><th>在庫数</th><th>メーカー名</th><th></th><th></th></tr>');
+          var table = $('<table>').addClass('table tablesorter'); // 'tablesorter'クラスを追加
+          var thead = $('<thead>').append('<tr><th class="sortable">ID</th><th>商品画像</th><th class="sortable">商品名</th><th class="sortable">価格</th><th class="sortable">在庫数</th><th class="sortable">メーカー名</th><th></th><th></th></tr>');
           table.append(thead);
-
+  
           var tbody = $('<tbody>');
           response.products.forEach(function(product) {
             var row = $('<tr>');
@@ -33,25 +33,28 @@ $(document).ready(function() {
             row.append('<td><button class="product-price-btn" data-id="' + product.id + '">' + product.price + '</button></td>');
             row.append('<td><button class="product-stock-btn" data-id="' + product.id + '">' + product.stock + '</button></td>');
             row.append('<td>' + product.company_name + '</td>');
-
-            var showUrl = "/nonestep7/public/products/show/" + product.id;
+  
+            var showUrl = "/nonestep7/public/products/" + product.id;
             row.append('<td><a href="' + showUrl + '"><button>詳細</button></a></td>');
-
+  
             row.append('<td><button class="deletebutton" type="button" data-product-id="' + product.id + '">削除</button></td>');
-
+  
             tbody.append(row);
           });
-
+  
           table.append(tbody);
           results.append(table);
-
-          // tablesorterを再初期化
-          $("#product-table").tablesorter({
-            sortList: [[0,1]] // 初期表示時はID降順
+  
+          // tablesorter プラグインの初期化
+          $(".tablesorter").tablesorter({
+            headers: {
+              1: { sorter: false },  // 商品画像列をソート対象外にする
+              6: { sorter: false },  // 詳細ボタン列をソート対象外にする
+              7: { sorter: false }   // 削除ボタン列をソート対象外にする
+            },
+            
           });
-
-          bindDeleteForms();
-          bindProductButtons();
+  
         } else {
           results.append('<p>該当する商品はありません。</p>');
         }
@@ -68,46 +71,31 @@ $(document).ready(function() {
   });
 
   searchProducts();
+});
 
-  function bindDeleteForms() {
-    $(".deletebutton").on('click', function(event) {
-      event.preventDefault();
+$(document).on('click', ".deletebutton", function(event) {
+  event.preventDefault();
 
-      if (!confirm('本当に削除してもよろしいですか？')) {
-        return;
-      }
-
-      const product_id = $(this).data("product-id");
-
-      $.ajax({
-        url: '/nonestep7/public/products/' + product_id,
-        type: 'DELETE',
-        success: function(response) {
-          $(event.target).closest('tr').remove();
-          alert('削除が成功しました');
-        },
-        error: function(xhr) {
-          console.error('削除処理中にエラーが発生しました', xhr.responseText);
-          alert('削除に失敗しました');
-        }
-      });
-    });
+  if (!confirm('本当に削除してもよろしいですか？')) {
+    return;
   }
 
-  function bindProductButtons() {
-    $(".product-name-btn").on('click', function() {
-      const productId = $(this).data('id');
-      alert('商品名のボタンがクリックされました。ID: ' + productId);
-    });
+  const product_id = $(this).data("product-id");
 
-    $(".product-price-btn").on('click', function() {
-      const productId = $(this).data('id');
-      alert('価格のボタンがクリックされました。ID: ' + productId);
-    });
-
-    $(".product-stock-btn").on('click', function() {
-      const productId = $(this).data('id');
-      alert('在庫数のボタンがクリックされました。ID: ' + productId);
-    });
-  }
+  $.ajax({
+    url: '/nonestep7/public/products/' + product_id,
+    type: 'POST',
+    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+    data: {
+      _method: 'DELETE',
+    },
+    success: function(response) {
+      $(event.target).closest('tr').remove();
+      alert('削除が成功しました');
+    },
+    error: function(xhr) {
+      console.error('削除処理中にエラーが発生しました', xhr.responseText);
+      alert('削除に失敗しました');
+    }
+  });
 });
