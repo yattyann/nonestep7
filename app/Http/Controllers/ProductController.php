@@ -14,43 +14,11 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-{
-    //products テーブルと companies テーブルを結合するためのもの
-    $query = Product::query()->join('companies', 'companies.id', '=', 'products.company_id');
+    {
+        $companies = Company::all();
 
-    // キーワード、メーカーIDによるフィルタリング
-    if ($request->filled('keyword')) {
-        $query->where('product_name', 'like', '%' . $request->keyword . '%');
+        return view('products.index', compact('companies'));
     }
-
-    if ($request->filled('company_id')) {
-        $query->where('company_id', $request->company_id);
-    }
-
-    // 価格の下限と上限によるフィルタリング
-    if ($request->filled('min_price')) {
-        $query->where('price', '>=', $request->min_price);
-    }
-
-    if ($request->filled('max_price')) {
-        $query->where('price', '<=', $request->max_price);
-    }
-
-    // 在庫数の下限と上限によるフィルタリング
-    if ($request->filled('min_stock')) {
-        $query->where('stock', '>=', $request->min_stock);
-    }
-
-    if ($request->filled('max_stock')) {
-        $query->where('stock', '<=', $request->max_stock);
-    }
-
-    // IDの昇順でソート
-    $products = $query->orderBy('id', 'asc')->get();
-    $companies = Company::all();
-
-    return view('products.index', compact('products', 'companies'));
-}
 
 public function search(Request $request)
 {

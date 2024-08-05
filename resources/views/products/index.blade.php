@@ -61,7 +61,7 @@
 @section('content')
 <div class="container">
   <!-- 検索結果表示エリア -->
-  <div style="border: 2px solid black; padding: 5px;" id="search-results">
+  <div style="border: 5px solid black; padding: 5px;" id="search-results">
     <!-- 検索結果の表示 -->
   </div>
 </div>
