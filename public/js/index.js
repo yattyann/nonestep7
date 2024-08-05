@@ -29,9 +29,9 @@ $(document).ready(function() {
             } else {
               row.append('<td>商品画像なし</td>');
             }
-            row.append('<td>' + product.product_name + '</td>');
-            row.append('<td>' + product.price + '</td>');
-            row.append('<td>' + product.stock + '</td>');
+            row.append('<td><button class="product-name-btn" data-id="' + product.id + '">' + product.product_name + '</button></td>');
+            row.append('<td><button class="product-price-btn" data-id="' + product.id + '">' + product.price + '</button></td>');
+            row.append('<td><button class="product-stock-btn" data-id="' + product.id + '">' + product.stock + '</button></td>');
             row.append('<td>' + product.company_name + '</td>');
   
             var showUrl = "/nonestep7/public/products/" + product.id;

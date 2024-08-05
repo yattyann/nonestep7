@@ -7,10 +7,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.min.js"></script>
 
 @section('head')
-<meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('css/index.css') }}">
-<!-- jQuery tablesorterの読み込み -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/css/theme.default.min.css">
+<!-- tablesorterのCSSを追加 -->
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/css/theme.default.min.css">
 @endsection
 
 @section('script')
@@ -25,11 +24,11 @@
 @section('sort')
 <div class="sort-area">
   <form method="get" action="{{ route('products.index') }}" id="search-form">
-    <input type="text" class="form-input" placeholder="キーワードを入力してください" name="keyword">
+    <input type="text" class="form-input" placeholder="キーワードを入力してください" name="keyword" value="{{ request('keyword') }}">
     <select name="company_id" class="form-select">
       <option value="">メーカーを選択</option>
       @foreach($companies as $company)
-      <option value="{{ $company->id }}">{{ $company->company_name }}</option>
+      <option value="{{ $company->id }}" @if(request('company_id') == $company->id) selected @endif>{{ $company->company_name }}</option>
       @endforeach
     </select>
     <h3>絞り込み機能</h3>
