@@ -9,8 +9,8 @@
 @section('content')
 <div class="container">
 <div style="border: 2px solid black; padding: 5px;">
-  <table>
-    <form action="{{ route('products.store') }}" method="post" enctype="multipart/form-data">
+    <table>
+        <form action="{{ route('products.store') }}" method="post" enctype="multipart/form-data">
         @csrf
         @if ($errors->any())
             <div class="alert alert-danger">

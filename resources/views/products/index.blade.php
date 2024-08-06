@@ -48,7 +48,9 @@
         <label for="max_stock">在庫上限:</label>
         <input type="number" class="form-input" placeholder="在庫上限を入力してください" name="max_stock" id="max_stock" value="{{ request('max_stock') }}">
     </div>
-    <button type="submit" class="form-button">検索</button>
+    <div class="search">
+      <button type="submit" class="form-button">検索</button>
+    </div>
 
     <!-- 新規登録ボタンを追加 -->
     <div class="button-container">

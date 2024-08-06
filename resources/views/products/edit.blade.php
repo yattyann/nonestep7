@@ -9,7 +9,7 @@
 @section('content')
 <div class="container">
 <div style="border: 2px solid black; padding: 5px;">
-  <table>
+    <table>
     <form action="{{ route('products.update', $product->id) }}" method="post" enctype="multipart/form-data">
         @csrf
         @method('put')
@@ -69,11 +69,13 @@
         </table>
         </div>
 
-        <div style="text-align: right;"><input type="submit" value="更新">
-        <a href="{{ route('products.show', $product->id) }}"><button type='button'>戻る</button></a>
+        <div class="all">
+            <input type="submit" value="更新" class="submit-button">
+            <a href="{{ route('products.show', $product->id) }}" class="back-link"><button type="button">戻る</button></a>
+        </div>
         
-      </form>
-      </table>
-      </div>  
+        </form>
+    </table>
+</div>  
 @endsection
 
